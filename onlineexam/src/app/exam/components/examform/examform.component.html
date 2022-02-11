@@ -1,0 +1,22 @@
+<p>Online Exam</p>
+<div class="container" >
+   
+        <form [formGroup]="questionform" (ngSubmit)="submit()">
+        <div class="form-group" *ngFor="let q of Questions,let i=index">
+            <label class="form-label">{{i+1 +") "+q.question}}</label><br/>
+            <input type="radio"  formControlName={{q.question}} [value]="q.answers.answer_a">{{q.answers.answer_a}}<br/>
+            <input type="radio" formControlName={{q.question}} [value]="q.answers.answer_b">{{q.answers.answer_b}}<br/>
+            <div *ngIf="q.answers.answer_c !=null" >
+                <input type="radio" formControlName={{q.question}} [value]="q.answers.answer_c">{{q.answers.answer_c}}<br/>
+            </div>
+            <div *ngIf="q.answers.answer_d !=null" >
+                <input type="radio" formControlName={{q.question}}  [value]="q.answers.answer_d">{{q.answers.answer_d}}<br/>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <button  (click)="submit()" >Submit</button>  
+    </form>
+</div>
+
