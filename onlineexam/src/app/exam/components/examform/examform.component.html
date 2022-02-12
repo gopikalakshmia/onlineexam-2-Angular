@@ -1,22 +1,28 @@
 <p>Online Exam</p>
 <div class="container" >
-   
+   <div *ngIf="queLoaded|async">
         <form [formGroup]="questionform" (ngSubmit)="submit()">
-        <div class="form-group" *ngFor="let q of Questions,let i=index">
-            <label class="form-label">{{i+1 +") "+q.question}}</label><br/>
-            <input type="radio"  formControlName={{q.question}} [value]="q.answers.answer_a">{{q.answers.answer_a}}<br/>
-            <input type="radio" formControlName={{q.question}} [value]="q.answers.answer_b">{{q.answers.answer_b}}<br/>
-            <div *ngIf="q.answers.answer_c !=null" >
-                <input type="radio" formControlName={{q.question}} [value]="q.answers.answer_c">{{q.answers.answer_c}}<br/>
+            <label class="form-label">{{(currentQue) +') '+currentQuestion.question}}</label><br/>
+            <input type="radio"  formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_a)"  [value]="currentQuestion.answers.answer_a">{{currentQuestion.answers.answer_a}}<br/>
+            <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_b)" (change)="answersSave(currentQuestion.answers.answer_a)" [value]="currentQuestion.answers.answer_b">{{currentQuestion.answers.answer_b}}<br/>
+            <div *ngIf="currentQuestion.answers.answer_c !=null" >
+                <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_c)" [value]="currentQuestion.answers.answer_c">{{currentQuestion.answers.answer_c}}<br/>
             </div>
-            <div *ngIf="q.answers.answer_d !=null" >
-                <input type="radio" formControlName={{q.question}}  [value]="q.answers.answer_d">{{q.answers.answer_d}}<br/>
+            <div *ngIf="currentQuestion.answers.answer_d !=null" >
+                <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_d)"  [value]="currentQuestion.answers.answer_d">{{currentQuestion.answers.answer_d}}<br/>
             </div>
             <br/>
             <br/>
             <br/>
-        </div>
-        <button  (click)="submit()" >Submit</button>  
+            <div *ngIf="nextVisibility">
+                <input type="button" (click)="next()" value="Next question">   
+            </div>
+                 
+            <div *ngIf="submitVisibility">
+                <input type="button" (click)="submit()" value="Submit"> 
+            </div> 
+         
     </form>
+</div>
 </div>
 

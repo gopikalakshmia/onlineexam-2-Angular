@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-examform',
   templateUrl: './examform.component.html',
@@ -15,38 +16,86 @@ export class ExamformComponent implements OnInit {
   questionform!: FormGroup;
   correctAnswer:number=0;
   wrongAnswer:number=0;
+  currentQue:number=0;
+  queLoaded:Promise<boolean>;
+  currentQuestion:Quesmodel;
+  currentAns:string;
+  selectedQA:
+  Array<{Q:string,
+  A:string}>;
+  count:number=0;
+  submitVisibility:boolean=false;
+  nextVisibility:boolean=true;
+
+  
 
   constructor( public form:FormBuilder,private questionservice:QuestionService,private router:Router) {
     this.questionform=new FormGroup({});
+    console.log("constructor");
+    this.selectedQA=[];
       
    }
 
   ngOnInit(): void {
 
-    this.getQuestion();
+    this.questionservice.getQuestion().subscribe(
+      (que)=>
+      {
+        this.Questions=que;
+        console.log("got questions");
+       this.next();
+        this.queLoaded=Promise.resolve(true);
+        
+        
+        
+      },
+      (err)=>console.log(err),
+      ()=>{console.log("Done");
+      
+      }
+    );
+    console.log("ngoninit");
+    //this.getQuestion();
   
 
   }
 
-  getQuestion(){
-    this.questionservice.getQuestion().subscribe(
-      (que)=>
-      {this.Questions=que;
-        this.Questions.forEach(q=>{
-          if(this.questionform!=undefined){
-            this.questionform.addControl(q.question.toString(),new FormControl(""));
-          }})},
-      (err)=>console.log(err),
-      ()=>console.log("Done")
-    );
+  next(){
+    if(this.currentQue>0){
+    this.selectedQA.push({Q:this.Questions[this.currentQue-1].question,A:this.currentAns});
+    console.log(this.selectedQA);
+    }
+    if(this.currentQue >=9){
+      this.submitVisibility=true;
+      this.nextVisibility=false;
+    }
+    this.currentQuestion=this.Questions[this.currentQue];
+    if(this.currentQue==1){
+      this.questionform.reset();
+      this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl(""));
+    }
+    else
+    { this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl(""));
   }
+  this.currentQue=this.currentQue+1;
+  }
+  answersSave(ans:string){
+    this.currentAns=ans;
+  }
+
   submit(){
+    this.selectedQA.push({Q:this.Questions[this.currentQue-1].question,A:this.currentAns});
+    console.log(this.selectedQA);
+    let i=0;
+    console.log(this.questionform);
 
     this.Questions.forEach(q=>
       {
         if(q.correct_answers.answer_a_correct=="true"){
-          if(q.answers.answer_a==(this.questionform.get(q.question)?.value)){
-            console.log("correct answer");
+          if(q.answers.answer_a==(this.selectedQA[i].A)){
+            console.log("a correct answer");
+            console.log(q.answers.answer_a);
+            console.log((this.selectedQA[i].A));
             this.correctAnswer++;
             console.log(q.correct_answers.answer_a_correct);
           }
@@ -54,8 +103,10 @@ export class ExamformComponent implements OnInit {
           this.wrongAnswer++;
         }
         else if(q.correct_answers.answer_b_correct=="true"){
-          if(q.answers.answer_b==(this.questionform.get(q.question)?.value)){
-            console.log("correct answer");
+          if(q.answers.answer_b==(this.selectedQA[i].A)){
+            console.log("b correct answer");
+            console.log(q.answers.answer_b);
+            console.log((this.selectedQA[i].A));
             this.correctAnswer++;
             console.log(q.correct_answers.answer_b_correct);
           }
@@ -63,8 +114,10 @@ export class ExamformComponent implements OnInit {
           this.wrongAnswer++;
         }
         else if(q.correct_answers.answer_c_correct=="true"){
-          if(q.answers.answer_c==(this.questionform.get(q.question)?.value)){
-            console.log("correct answer");
+          if(q.answers.answer_c==(this.selectedQA[i].A)){
+            console.log("c correct answer");
+            console.log(q.answers.answer_c);
+            console.log((this.selectedQA[i].A));
             this.correctAnswer++;
             console.log(q.correct_answers.answer_c_correct);
           }
@@ -72,14 +125,20 @@ export class ExamformComponent implements OnInit {
           this.wrongAnswer++;
         }
         else if(q.correct_answers.answer_d_correct=="true"){
-          if(q.answers.answer_d==(this.questionform.get(q.question)?.value)){
-            console.log("correct answer");
+          if(q.answers.answer_d==(this.selectedQA[i].A)){
+            console.log("d correct answer");
+            console.log(q.answers.answer_a);
+            console.log((this.selectedQA[i].A));
             console.log(q.correct_answers.answer_d_correct);
             this.correctAnswer++;
           }
           else
           this.wrongAnswer++;
-        }}
+        }
+        i=i+1;
+        
+      }
+     
     )
 
     //alert("No: of Correct Answer"+this.correctAnswer +" No:of Wrong answers :"+this.wrongAnswer);
