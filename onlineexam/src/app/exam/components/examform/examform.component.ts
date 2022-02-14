@@ -26,6 +26,7 @@ export class ExamformComponent implements OnInit {
   count:number=0;
   submitVisibility:boolean=false;
   nextVisibility:boolean=true;
+  qdisplay:boolean[]=[false,false,false,false,false,false,false,false,false,false];
 
   
 
@@ -81,6 +82,8 @@ export class ExamformComponent implements OnInit {
   }
   answersSave(ans:string){
     this.currentAns=ans;
+    this.qdisplay[this.currentQue-1]=true;
+    console.log(this.qdisplay);
   }
 
   submit(){

@@ -1,0 +1,38 @@
+.qcontainer{
+    margin:100px 100px 100px  100px;
+  width:50%;
+}
+
+.radiocontainer{
+    background-color: #E7E9EB;
+    font-size: 18px;
+    padding: 10px 10px 10px 50px;
+    cursor: pointer;
+    margin-bottom: 1px;
+}
+.radiocontainer:hover{
+    background-color:#ddd;
+}
+
+.quecontainer{
+    font-size: 18px;
+}
+
+.tableq{
+    background-color: orange;
+
+}
+.tablea{
+    background-color: green;
+
+}
+
+th{
+    border:8px solid white;
+    
+}
+.tableg{
+    margin: 100px auto;
+    width: 20%;
+    
+}

@@ -1,28 +1,54 @@
-<p>Online Exam</p>
+
 <div class="container" >
-   <div *ngIf="queLoaded|async">
-        <form [formGroup]="questionform" (ngSubmit)="submit()">
-            <label class="form-label">{{(currentQue) +') '+currentQuestion.question}}</label><br/>
-            <input type="radio"  formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_a)"  [value]="currentQuestion.answers.answer_a">{{currentQuestion.answers.answer_a}}<br/>
-            <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_b)" (change)="answersSave(currentQuestion.answers.answer_a)" [value]="currentQuestion.answers.answer_b">{{currentQuestion.answers.answer_b}}<br/>
-            <div *ngIf="currentQuestion.answers.answer_c !=null" >
-                <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_c)" [value]="currentQuestion.answers.answer_c">{{currentQuestion.answers.answer_c}}<br/>
-            </div>
-            <div *ngIf="currentQuestion.answers.answer_d !=null" >
-                <input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_d)"  [value]="currentQuestion.answers.answer_d">{{currentQuestion.answers.answer_d}}<br/>
-            </div>
-            <br/>
-            <br/>
-            <br/>
-            <div *ngIf="nextVisibility">
-                <input type="button" (click)="next()" value="Next question">   
-            </div>
+    <div class="row">
+        <div class="col-10 qcontainer">
+            
+            <div *ngIf="queLoaded|async">
+                <form [formGroup]="questionform" (ngSubmit)="submit()">
+                    <div class="quecontainer" ><p>{{'Question '+currentQue +' of 10'}}</p>
+                   <label class="form-label">{{(currentQue) +') '+currentQuestion.question}}</label><br/></div>
+                   <div class="radiocontainer" ><input type="radio" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_a)"  [value]="currentQuestion.answers.answer_a">{{currentQuestion.answers.answer_a}}<br/></div> 
+                   <div class="radiocontainer" ><input type="radio" class="radiocontainer" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_b)" (change)="answersSave(currentQuestion.answers.answer_a)" [value]="currentQuestion.answers.answer_b">{{currentQuestion.answers.answer_b}}<br/></div> 
+                    <div *ngIf="currentQuestion.answers.answer_c !=null" >
+                        <div class="radiocontainer" ><input type="radio" class="radiocontainer" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_c)" [value]="currentQuestion.answers.answer_c">{{currentQuestion.answers.answer_c}}<br/></div> 
+                    </div>
+                    <div *ngIf="currentQuestion.answers.answer_d !=null" >
+                        <div class="radiocontainer" ><input type="radio" class="radiocontainer" formControlName={{currentQuestion.question}} (change)="answersSave(currentQuestion.answers.answer_d)"  [value]="currentQuestion.answers.answer_d">{{currentQuestion.answers.answer_d}}<br/></div> 
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div *ngIf="nextVisibility">
+                        <input type="button" class="btn btn-success" (click)="next()" value="Next >">   
+                    </div>
+                         
+                    <div *ngIf="submitVisibility">
+                        <input type="button" class="btn btn-success" (click)="submit()" value="Submit"> 
+                    </div> 
                  
-            <div *ngIf="submitVisibility">
-                <input type="button" (click)="submit()" value="Submit"> 
-            </div> 
-         
-    </form>
-</div>
+            </form>
+        </div>
+        </div>
+        <div class="col-2 tableg">
+            <table class="table  ">
+                <tbody>
+                  <tr>
+                    <th [ngClass]="qdisplay[0]?'tablea':'tableq'" scope="row">1</th>
+                    <th [ngClass]="qdisplay[1]?'tablea':'tableq'"scope="row" >2</th>
+                    <th [ngClass]="qdisplay[2]?'tablea':'tableq'" scope="row">3</th>
+                    <th [ngClass]="qdisplay[3]?'tablea':'tableq'" scope="row">4</th>
+                    <th [ngClass]="qdisplay[4]?'tablea':'tableq'" scope="row">5</th>
+                  </tr>
+                  <tr>
+                    <th [ngClass]="qdisplay[5]?'tablea':'tableq'" scope="row">6</th>
+                    <th [ngClass]="qdisplay[6]?'tablea':'tableq'" scope="row">7</th>
+                    <th [ngClass]="qdisplay[7]?'tablea':'tableq'" scope="row">8</th>
+                    <th [ngClass]="qdisplay[8]?'tablea':'tableq'" scope="row">9</th>
+                    <th [ngClass]="qdisplay[9]?'tablea':'tableq'" scope="row">10</th>
+                  </tr>
+                </tbody>
+              </table>
+    </div>
+   
 </div>
 
