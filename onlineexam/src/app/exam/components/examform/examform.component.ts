@@ -1,7 +1,7 @@
 import { Quesmodel } from './../../../models/question/quesmodel';
 import { QuestionService } from './../../../services/question/question.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 
 
@@ -62,23 +62,36 @@ export class ExamformComponent implements OnInit {
   }
 
   next(){
-    if(this.currentQue>0){
-    this.selectedQA.push({Q:this.Questions[this.currentQue-1].question,A:this.currentAns});
-    console.log(this.selectedQA);
+    if(this.currentAns==""&&this.currentQue>0){
+      console.log("the question not answered");
+      console.log(this.currentAns);
+      console.log(this.currentQue);
+      alert("Please answer the question");
     }
-    if(this.currentQue >=9){
-      this.submitVisibility=true;
-      this.nextVisibility=false;
+    else{
+
+      if(this.currentQue>0){
+        this.selectedQA.push({Q:this.Questions[this.currentQue-1].question,A:this.currentAns});
+        console.log(this.selectedQA);
+       
+        }
+        if(this.currentQue >=9){
+          this.submitVisibility=true;
+          this.nextVisibility=false;
+        }
+        this.currentQuestion=this.Questions[this.currentQue];
+        if(this.currentQue==1){
+          this.questionform.reset();
+          this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl("",Validators.required));
+          this.currentAns="";
+        }
+        else
+        { this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl("",Validators.required));
+        this.currentAns="";
+      }
+      this.currentQue=this.currentQue+1;
     }
-    this.currentQuestion=this.Questions[this.currentQue];
-    if(this.currentQue==1){
-      this.questionform.reset();
-      this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl(""));
-    }
-    else
-    { this.questionform.addControl(this.Questions[this.currentQue].question.toString(),new FormControl(""));
-  }
-  this.currentQue=this.currentQue+1;
+   
   }
   answersSave(ans:string){
     this.currentAns=ans;
@@ -91,6 +104,16 @@ export class ExamformComponent implements OnInit {
     console.log(this.selectedQA);
     let i=0;
     console.log(this.questionform);
+    let unfilled=0;
+    this.qdisplay.forEach(q=>{
+      if(q){
+        unfilled++;
+      }
+    }
+      )
+      console.log(unfilled);
+
+      if(unfilled==10){
 
     this.Questions.forEach(q=>
       {
@@ -151,9 +174,15 @@ export class ExamformComponent implements OnInit {
        data:score
      }
    };
-       
+   
     this.router.navigate(['/score'],navigationscore);
+  }
+  else{
+    alert("please answer all questions");
+  }
     
   }
+
+
 
 }

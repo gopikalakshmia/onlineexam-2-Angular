@@ -36,3 +36,7 @@ th{
     width: 20%;
     
 }
+
+.radiocontainer .ng-touched .ng-invalid{
+    border:1px solid red;
+}
